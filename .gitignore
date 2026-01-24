@@ -1,0 +1,31 @@
+# Credenciales y secrets
+.env
+*.key
+credentials.json
+token.json
+
+# Archivos de configuración locales
+config.local.json
+n8n_credentials.json
+
+# Archivos temporales
+*.tmp
+*.temp
+~$*
+
+# Logs
+logs/
+*.log
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Node modules (si usas scripts adicionales)
+node_modules/
