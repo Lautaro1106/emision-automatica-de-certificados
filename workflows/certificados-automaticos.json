@@ -1,0 +1,672 @@
+{
+  "name": "Certificados Automaticos",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Creación del certificado \n\n**1. Lectura del excel:** Primero lee el excel para saber que alumnos asistieron y no se les envío el certificado, de los cuales carga sus datos.\n\n**2. Copia de la plantilla:** Se crea un archivo temporal para no editar y perder la plantilla original de los certificados.\n\n**3. Se reemplaza en la plantilla temporal:** Se hace uso de un nodo de google slides para reemplazar los valores del archivo temporal por los datos del alumno y del profesor que da la charla.\n",
+        "height": 896,
+        "width": 960,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -656,
+        -208
+      ],
+      "id": "ab896dc9-4c9e-4080-9344-1585d463369f",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Cargar el archivo PDF\n\n**1. Se exporta en PDF:** Mediante un nodo de Drive se exporta el archivo modificado en formato PDF.\n\n**2. Subir el archivo:** Se carga el PDF final del certificado a una carpeta.\n\n**3. Se elimina la plantilla temporal:** Se elimina la plantilla temporal de google slides que creamos anteriormente.\n\n**4. Se marca el certificado como enviado:** Se marca en el google sheets la casilla de enviado para no volver a emitir otro certificado de la misma persona.\n\n**5. Nodo de espera:** Se esperan 5 segundos antes de crear el siguiente certificado para no saturar la API de google en caso de emitir un mayor volumen de certificados.\n",
+        "height": 896,
+        "width": 1216,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        368,
+        -208
+      ],
+      "id": "9121cbc2-ed0a-47ad-8cfc-b9ce4bb3c6af",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.presentationId }}",
+          "mode": "id"
+        },
+        "options": {
+          "googleFileConversion": {
+            "conversion": {
+              "docsToFormat": "application/pdf",
+              "drawingsToFormat": "image/png",
+              "slidesToFormat": "application/pdf"
+            }
+          },
+          "fileName": "=Certificado-{{ $('Leer Lista Certificados').item.json.Actividad }}-{{ $('Leer Lista Certificados').item.json['Fecha Actividad'] }}-{{ $('Leer Lista Certificados').item.json['Nombre Estudiante'] }}"
+        }
+      },
+      "id": "183d14dd-c7db-4df7-bb0f-81c83fc8a649",
+      "name": "Exportar PDF1",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        496,
+        160
+      ],
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "EnGMhuFovJWLsTsK",
+          "name": "Google Drive - SL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1tE8i6ZSx9JIJI0dC7WpGIJKuLnF3YpO3eK7fbT1QkGs",
+          "mode": "list",
+          "cachedResultName": "Lista Certificados",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1tE8i6ZSx9JIJI0dC7WpGIJKuLnF3YpO3eK7fbT1QkGs/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "SOLO TOCAR (SI/NO)",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1tE8i6ZSx9JIJI0dC7WpGIJKuLnF3YpO3eK7fbT1QkGs/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Enviado": "SI",
+            "Email": "={{ $json.Email }}",
+            "row_number": 0
+          },
+          "matchingColumns": [
+            "Email"
+          ],
+          "schema": [
+            {
+              "id": "Nombre Estudiante",
+              "displayName": "Nombre Estudiante",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Actividad",
+              "displayName": "Actividad",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Fecha Actividad",
+              "displayName": "Fecha Actividad",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Nombre Instructor",
+              "displayName": "Nombre Instructor",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Cargo Instructor",
+              "displayName": "Cargo Instructor",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ID Firma ",
+              "displayName": "ID Firma ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Asistió?",
+              "displayName": "Asistió?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Enviado",
+              "displayName": "Enviado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "b63b5305-99fc-4fd6-9e1b-12b88a5f348b",
+      "name": "Marcar como Enviado1",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        944,
+        464
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "STadpRCcyiEIkgPW",
+          "name": "Google Sheets - SL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "copy",
+        "fileId": {
+          "__rl": true,
+          "value": "1Ic9TzyXa_Ip-wMMcPwy_nd0geCE7Uy_21P7wSLzpn3k",
+          "mode": "list",
+          "cachedResultName": "Plantilla predeterminada de certificado",
+          "cachedResultUrl": "https://docs.google.com/presentation/d/1Ic9TzyXa_Ip-wMMcPwy_nd0geCE7Uy_21P7wSLzpn3k/edit?usp=drivesdk"
+        },
+        "name": "=Modelo Certificado {{ $json['Nombre Estudiante'] }}",
+        "sameFolder": false,
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "183hxN6mQ472qIym7r56o2xAbaf1XPl5j",
+          "mode": "list",
+          "cachedResultName": "Certificados Listos",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/183hxN6mQ472qIym7r56o2xAbaf1XPl5j"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -288,
+        288
+      ],
+      "id": "9dd7bebb-c2cb-440c-895d-6d8df1d08f70",
+      "name": "Duplica la plantilla de Certificado1",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "EnGMhuFovJWLsTsK",
+          "name": "Google Drive - SL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "operation": "replaceText",
+        "presentationId": "={{ $json.id }}",
+        "textUi": {
+          "textValues": [
+            {
+              "pageObjectIds": [
+                "p"
+              ],
+              "text": "{{NOMBRE_TALLER}}",
+              "replaceText": "={{ $('Leer Lista Certificados').item.json.Actividad }}"
+            },
+            {
+              "pageObjectIds": [
+                "p"
+              ],
+              "text": "{{NOMBRE_COMPLETO}}",
+              "replaceText": "={{ $('Leer Lista Certificados').item.json['Nombre Estudiante'] }}"
+            },
+            {
+              "pageObjectIds": [
+                "p"
+              ],
+              "text": "{{FECHA_TEXTO}}",
+              "replaceText": "={{ $('Leer Lista Certificados').item.json['Fecha Actividad'] }}"
+            },
+            {
+              "pageObjectIds": [
+                "p"
+              ],
+              "text": "{{NOMBRE_INSTRUCTOR}}",
+              "replaceText": "={{ $('Leer Lista Certificados').item.json['Nombre Instructor'] }}"
+            },
+            {
+              "pageObjectIds": [
+                "p"
+              ],
+              "text": "{{CARGO_INSTRUCTOR}}",
+              "replaceText": "={{ $('Leer Lista Certificados').item.json['Cargo Instructor'] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "4b74549c-0412-4e2a-973e-2028fb8680c4",
+      "name": "Carga los datos del alumno1",
+      "type": "n8n-nodes-base.googleSlides",
+      "typeVersion": 1,
+      "position": [
+        -48,
+        304
+      ],
+      "credentials": {
+        "googleSlidesOAuth2Api": {
+          "id": "0uiP8bGXh7zSnWmo",
+          "name": "Google Slides account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "deleteFile",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $('Duplica la plantilla de Certificado1').item.json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1136,
+        272
+      ],
+      "id": "ec406801-22b9-4630-af08-f834066b4420",
+      "name": "Borrar archivo temporal1",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "EnGMhuFovJWLsTsK",
+          "name": "Google Drive - SL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Leer Lista Certificados').item.json.Email }}",
+        "subject": "=Certificado de Asistencia: {{ $('Leer Lista Certificados').item.json.Actividad }}",
+        "message": "=<div style=\"font-family: Arial, sans-serif; color: #333;\">\n    <p>Hola <strong>{{ $('Leer Lista Certificados').item.json['Nombre Estudiante'] }}</strong>,</p>\n\n    <p>Esperamos que hayas disfrutado de la actividad.</p>\n\n    <p>Te escribimos para enviarte el certificado oficial de asistencia al evento <strong>{{ $('Leer Lista Certificados').item.json.Actividad }}</strong> realizado el día {{ $('Leer Lista Certificados').item.json['Fecha Actividad'] }}.</p>\n\n    <p>Encontrarás el documento adjunto a este correo en formato PDF.</p>\n\n    <br>\n    <p>Atentamente,</p>\n    <p><strong>El Equipo de Somos Libres</strong><br>\n    <em>Área Académica</em></p>\n    \n    <hr style=\"border: 0; border-top: 1px solid #eee;\">\n    <small style=\"color: #888;\">Por favor no respondas a este correo, es un envío automático.</small>\n</div>",
+        "options": {
+          "appendAttribution": false,
+          "attachmentsUi": {
+            "attachmentsBinary": [
+              {}
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        800,
+        48
+      ],
+      "id": "0c8ee964-6230-481e-b59f-62f3e9e9fc04",
+      "name": "Enviar certificado por mail1",
+      "webhookId": "2a9e7d67-ad0c-4859-82a6-c078fbf1dcb3",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "rg1npUcxtABpTRVv",
+          "name": "Gmail account - SL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "name": "=Certificado {{ $('Leer Lista Certificados').item.json['Nombre Estudiante'] }} - {{ $('Leer Lista Certificados').item.json['Fecha Actividad'] }}",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "183hxN6mQ472qIym7r56o2xAbaf1XPl5j",
+          "mode": "list",
+          "cachedResultName": "Certificados Listos",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/183hxN6mQ472qIym7r56o2xAbaf1XPl5j"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        800,
+        272
+      ],
+      "id": "150807fa-1de6-44aa-8d7d-d7f8f9e72254",
+      "name": "Cargarlo al Drive1",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "EnGMhuFovJWLsTsK",
+          "name": "Google Drive - SL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -528,
+        464
+      ],
+      "id": "a1a25f51-e9af-45ea-823b-f4fcd99a3b08",
+      "name": "Loop Over Items1"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        768,
+        464
+      ],
+      "id": "da1b14b7-3d80-4d49-9069-0705771f8196",
+      "name": "Merge1"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "generar-certificados",
+        "authentication": "headerAuth",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -368,
+        48
+      ],
+      "id": "7f2abd80-29d7-4577-a17c-c17333aadfb6",
+      "name": "Webhook",
+      "webhookId": "b9f80c65-d787-467e-a099-ba5a1e9b4b96",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "iAa3wqNaRqOFtH2A",
+          "name": "Header Auth - Certificados"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1136,
+        464
+      ],
+      "id": "763b5e6b-81ea-4063-9eb8-385e1bb06adf",
+      "name": "Espera de 5 segundos",
+      "webhookId": "df576081-1a8e-487d-a09b-4a252ff430ec"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1tE8i6ZSx9JIJI0dC7WpGIJKuLnF3YpO3eK7fbT1QkGs",
+          "mode": "list",
+          "cachedResultName": "Lista Certificados",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1tE8i6ZSx9JIJI0dC7WpGIJKuLnF3YpO3eK7fbT1QkGs/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "SOLO TOCAR (SI/NO)",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1tE8i6ZSx9JIJI0dC7WpGIJKuLnF3YpO3eK7fbT1QkGs/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Asistió?",
+              "lookupValue": "SI"
+            },
+            {
+              "lookupColumn": "Enviado",
+              "lookupValue": "NO"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "cd38b385-21c0-4ec6-b210-1989f882be81",
+      "name": "Leer Lista Certificados",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        -48,
+        48
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "STadpRCcyiEIkgPW",
+          "name": "Google Sheets - SL"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Exportar PDF1": {
+      "main": [
+        [
+          {
+            "node": "Enviar certificado por mail1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Cargarlo al Drive1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Marcar como Enviado1": {
+      "main": [
+        [
+          {
+            "node": "Espera de 5 segundos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Duplica la plantilla de Certificado1": {
+      "main": [
+        [
+          {
+            "node": "Carga los datos del alumno1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Carga los datos del alumno1": {
+      "main": [
+        [
+          {
+            "node": "Exportar PDF1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Borrar archivo temporal1": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cargarlo al Drive1": {
+      "main": [
+        [
+          {
+            "node": "Borrar archivo temporal1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items1": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Duplica la plantilla de Certificado1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "Marcar como Enviado1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Leer Lista Certificados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Espera de 5 segundos": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Leer Lista Certificados": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "4bff93d1-69f2-408b-a123-5032fcbdd156",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "42a51fe85188c9d9a9a5099c0d58d015b9e739750d2c39e02b59fc3da241a13a"
+  },
+  "id": "nnysba6mgGmROmVu",
+  "tags": [
+    {
+      "updatedAt": "2025-12-24T05:07:45.446Z",
+      "createdAt": "2025-12-24T05:07:45.446Z",
+      "id": "7ZC7K4aPwPgUoMBO",
+      "name": "Somos Libres"
+    }
+  ]
+}
