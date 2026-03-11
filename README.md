@@ -186,7 +186,7 @@ Sistema low-code que automatiza la gestión y emisión de certificados de asiste
 4. Usar credenciales OAuth 2.0 del paso anterior
 ```
 
-#### Opción B: Self-hosted
+#### Opción B: Self-hosted (Local)
 ```bash
 # Instalar n8n
 npm install -g n8n
@@ -195,6 +195,13 @@ npm install -g n8n
 n8n start
 
 # Acceder a http://localhost:5678
+```
+
+#### Opción C: Self-hosted (VPS)
+```bash
+# Instalar n8n mediante docker
+
+# Instalar n8n desde Easy Panel (recomendado)
 ```
 
 ### 3. Importar Workflow
@@ -418,9 +425,9 @@ Este proyecto está bajo licencia MIT. Ver `LICENSE` para más información.
 
 **Lautaro Manuel Rojo Provenzano**
 
-- LinkedIn: [lautaro-manuel-rojo-provenzano](https://linkedin.com/in/lautaro-manuel-rojo-provenzano-203a05268)
-- GitHub: [@tu-usuario](https://github.com/tu-usuario)
-- Email: tu-email@ejemplo.com
+- LinkedIn: [Lautar Rojo](https://linkedin.com/in/lautaro-manuel-rojo-provenzano-203a05268)
+- GitHub: [@Lautaro1106](https://github.com/tu-usuario)
+- Email: lautarorojofx3@gmail.com
 
 ---
 
