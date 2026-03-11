@@ -425,8 +425,8 @@ Este proyecto está bajo licencia MIT. Ver `LICENSE` para más información.
 
 **Lautaro Manuel Rojo Provenzano**
 
-- LinkedIn: [Lautar Rojo](https://linkedin.com/in/lautaro-manuel-rojo-provenzano-203a05268)
-- GitHub: [@Lautaro1106](https://github.com/tu-usuario)
+- LinkedIn: [Lautaro Rojo](https://www.linkedin.com/in/lautaro-manuel-rojo-provenzano-203a05268/)
+- GitHub: [Lautaro1106](https://github.com/Lautaro1106)
 - Email: lautarorojofx3@gmail.com
 
 ---
